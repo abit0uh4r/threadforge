@@ -1,0 +1,210 @@
+name: Authentification
+description: |-
+
+  APIs pour la gestion de l'authentification (inscription, connexion, déconnexion).
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/register
+    metadata:
+      custom: []
+      groupName: Authentification
+      groupDescription: |-
+
+        APIs pour la gestion de l'authentification (inscription, connexion, déconnexion).
+      subgroup: ''
+      subgroupDescription: ''
+      title: Inscription
+      description: "Crée un nouveau compte créateur et retourne un Bearer Token d'accès."
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Nom du créateur.'
+        required: true
+        example: 'Jane Doe'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      email:
+        custom: []
+        name: email
+        description: 'Adresse email unique.'
+        required: true
+        example: jane@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      password:
+        custom: []
+        name: password
+        description: 'Mot de passe (min 8 caractères).'
+        required: true
+        example: secret123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Jane Doe'
+      email: jane@example.com
+      password: secret123
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "data": {"id": 1, "name": "Jane Doe", "email": "jane@example.com", "created_at": "2026-06-25T12:00:00+00:00", "updated_at": "2026-06-25T12:00:00+00:00"},
+            "token": "1|abcdef123456..."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: '{"message": "The given data was invalid.", "errors": {"email": ["The email has already been taken."]}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/login
+    metadata:
+      custom: []
+      groupName: Authentification
+      groupDescription: |-
+
+        APIs pour la gestion de l'authentification (inscription, connexion, déconnexion).
+      subgroup: ''
+      subgroupDescription: ''
+      title: Connexion
+      description: "Authentifie un créateur et retourne un Bearer Token d'accès."
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      email:
+        custom: []
+        name: email
+        description: 'Adresse email.'
+        required: true
+        example: jane@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      password:
+        custom: []
+        name: password
+        description: 'Mot de passe.'
+        required: true
+        example: secret123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      device_name:
+        custom: []
+        name: device_name
+        description: "Nom de l'appareil (optionnel)."
+        required: false
+        example: 'iPhone 15'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      email: jane@example.com
+      password: secret123
+      device_name: 'iPhone 15'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "name": "Jane Doe", "email": "jane@example.com", "created_at": "2026-06-25T12:00:00+00:00", "updated_at": "2026-06-25T12:00:00+00:00"}, "token": "1|abcdef123456..."}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: '{"message": "The given data was invalid.", "errors": {"email": ["These credentials do not match our records."]}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/logout
+    metadata:
+      custom: []
+      groupName: Authentification
+      groupDescription: |-
+
+        APIs pour la gestion de l'authentification (inscription, connexion, déconnexion).
+      subgroup: ''
+      subgroupDescription: ''
+      title: Déconnexion
+      description: 'Révoque le token courant.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Logged out"}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

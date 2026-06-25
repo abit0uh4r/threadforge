@@ -1,0 +1,182 @@
+name: Posts
+description: |-
+
+  Gestion du cycle de vie des posts générés (draft, archived, posted).
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/posts
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Gestion du cycle de vie des posts générés (draft, archived, posted).
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Liste des posts'
+      description: 'Retourne tous les posts générés par le créateur, avec eager loading.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      status:
+        custom: []
+        name: status
+        description: 'Filtrer par statut (draft, archived, posted).'
+        required: false
+        example: draft
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanQueryParameters:
+      status: draft
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": [{"id": 1, "campaign_id": 1, "raw_content_id": 1, "hook": "Laravel 11 ships with...", "body_points": ["Point 1", "Point 2"], "readability_score": 85, "suggested_hashtags": ["#laravel"], "tone_justification": "...", "status": "draft", "version": 1, "created_at": "2026-06-25T12:00:00+00:00", "updated_at": "2026-06-25T12:00:00+00:00"}]}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/posts/{id}'
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Gestion du cycle de vie des posts générés (draft, archived, posted).
+      subgroup: ''
+      subgroupDescription: ''
+      title: "Détail d'un post"
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'ID du post.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "campaign_id": 1, "raw_content_id": 1, "hook": "Laravel 11 ships with...", "body_points": ["Point 1", "Point 2"], "readability_score": 85, "suggested_hashtags": ["#laravel"], "tone_justification": "...", "status": "draft", "version": 1, "created_at": "2026-06-25T12:00:00+00:00", "updated_at": "2026-06-25T12:00:00+00:00"}}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: '{"message": "No query results for model [App\\Models\\Post]."}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/posts/{id}/status'
+    metadata:
+      custom: []
+      groupName: Posts
+      groupDescription: |-
+
+        Gestion du cycle de vie des posts générés (draft, archived, posted).
+      subgroup: ''
+      subgroupDescription: ''
+      title: "Changer le statut d'un post"
+      description: 'Met à jour le cycle de vie du post (draft, archived, posted).'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'ID du post.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      status:
+        custom: []
+        name: status
+        description: 'Nouveau statut (draft, archived, posted).'
+        required: true
+        example: posted
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      status: posted
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"id": 1, "campaign_id": 1, "raw_content_id": 1, "hook": "...", "body_points": [], "readability_score": 85, "suggested_hashtags": [], "tone_justification": "...", "status": "posted", "version": 1, "created_at": "...", "updated_at": "..."}}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: '{"message": "The given data was invalid.", "errors": {"status": ["The selected status is invalid."]}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

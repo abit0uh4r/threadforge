@@ -1,0 +1,89 @@
+name: Chat
+description: |-
+
+  Assistant conversationnel (Ghostwriter) pour retravailler les posts générés.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/posts/{id}/chat'
+    metadata:
+      custom: []
+      groupName: Chat
+      groupDescription: |-
+
+        Assistant conversationnel (Ghostwriter) pour retravailler les posts générés.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Discuter avec le Ghostwriter'
+      description: |-
+        Pose une question en langage naturel sur un post généré. L'assistant
+        utilise des tools PHP pour interroger la base de données et maintient
+        la mémoire de la conversation via son ID.
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'ID du post à discuter.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      message:
+        custom: []
+        name: message
+        description: "Le message/question pour l'assistant."
+        required: true
+        example: 'Donne-moi 3 variantes plus agressives pour le hook'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      conversation_id:
+        custom: []
+        name: conversation_id
+        description: 'ID de conversation existante pour continuer le contexte (optionnel).'
+        required: false
+        example: conv_abc123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      message: 'Donne-moi 3 variantes plus agressives pour le hook'
+      conversation_id: conv_abc123
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data": {"response": "Here are 3 more aggressive variants...", "conversation_id": "conv_abc123"}}'
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: '{"message": "The given data was invalid.", "errors": {"message": ["The message field is required."]}}'
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
