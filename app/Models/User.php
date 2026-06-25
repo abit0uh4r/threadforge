@@ -24,6 +24,11 @@ class User extends Authenticatable
         return $this->hasMany(Campaign::class);
     }
 
+    public function rawContents()
+    {
+        return $this->hasMany(RawContent::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
