@@ -19,6 +19,11 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasConversations, HasFactory, Notifiable;
 
+    public function campaigns()
+    {
+        return $this->hasMany(Campaign::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
