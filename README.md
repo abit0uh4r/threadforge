@@ -1,58 +1,121 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ThreadForge API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Headless REST API for repurposing raw tech content into optimized X (Twitter) posts, built with Laravel 13 + the laravel/ai SDK.
 
-## About Laravel
+## What it does
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+ThreadForge takes raw technical content (notes, blog markdown, GitHub README) and transforms it into punchy, style-compliant posts for X (Twitter). It separates **style** (Campaign Blueprints) from **writing** (AI generation) and ships with a conversational Ghostwriter agent that can refine posts via natural language.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Layer | Technology |
+|-------|-----------|
+| Framework | Laravel 13.x / PHP 8.3 |
+| Auth | Laravel Sanctum (Bearer Tokens) |
+| Database | MySQL 8.4 (Laragon) |
+| Queue | Database driver (async jobs) |
+| AI | laravel/ai SDK v0.8 + Groq (llama-3.3-70b-versatile) |
+| Docs | Scribe v5.11 (OpenAPI + Postman) |
 
-## Learning Laravel
+## Architecture
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+app/
+├── Ai/
+│   ├── Agents/
+│   │   ├── Repurposing.php      # Structured Output agent (US5)
+│   │   └── Ghostwriter.php      # Conversational agent with tools + memory (US7-9)
+│   └── Tools/
+│       ├── GetCampaignRules.php # Tool: fetches Blueprint rules from DB
+│       └── GetPostHistory.php   # Tool: fetches post versions from DB
+├── Http/
+│   ├── Controllers/Api/         # Auth, Campaign, Content, Post, Chat
+│   ├── Requests/               # Form Requests (validation)
+│   └── Resources/               # API Resources (JSON formatting)
+├── Jobs/
+│   └── RepurposeContentJob.php  # Async AI generation (202 Accepted)
+└── Models/                      # User, Campaign, RawContent, Post, PostVersion
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Setup
 
-## Contributing
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Configure MySQL in .env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=threadforge
+DB_USERNAME=root
+DB_PASSWORD=
 
-## Code of Conduct
+# Configure Groq AI in .env
+GROQ_API_KEY=your_groq_api_key
+AI_TEXT_PROVIDER=groq
+AI_TEXT_MODEL=llama-3.3-70b-versatile
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Migrate + seed
+php artisan migrate --force
+php artisan db:seed
 
-## Security Vulnerabilities
+# Run server + queue worker
+php artisan serve
+php artisan queue:work
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## API Endpoints
+
+### Auth (US1)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/register` | Create account + get Bearer token |
+| POST | `/api/login` | Login + get Bearer token |
+| POST | `/api/logout` | Revoke current token |
+
+### Campaigns / Blueprints (US2-3)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/campaigns` | List all campaigns (+ posts count) |
+| POST | `/api/campaigns` | Create a Blueprint |
+| GET | `/api/campaigns/{id}` | Campaign detail |
+
+### Content / Repurposing (US4-6)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/content/repurpose` | Submit raw content (202 Accepted, async) |
+| GET | `/api/posts` | List generated posts |
+| GET | `/api/posts/{id}` | Post detail |
+| PATCH | `/api/posts/{id}/status` | Update status (draft/archived/posted) |
+
+### Ghostwriter Chat (US7-9)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/posts/{id}/chat` | Chat with the Ghostwriter agent |
+
+## Key Design Decisions
+
+- **Structured Output**: The `Repurposing` agent enforces a strict JSON schema with the exact keys required by the cahier des charges (`hook_propose`, `body_points`, `technicalreadabilityscore`, `suggested_hashtags`, `tonecompliancejustification`).
+- **Async Processing**: `POST /api/content/repurpose` returns `202 Accepted` immediately. The AI call runs in a queued job (`RepurposeContentJob`).
+- **Zero Hallucination**: The Ghostwriter agent uses PHP tools (`GetCampaignRules`, `GetPostHistory`) that query the real database instead of inventing data.
+- **Conversation Memory**: The `RemembersConversations` trait persists chat history via the SDK's `agent_conversations` tables.
+- **Eloquent Casts**: `body_points` and `suggested_hashtags` are cast as native PHP `array` — no manual `json_encode`/`json_decode`.
+- **Provider-Agnostic**: Swap AI provider by changing `.env` (`AI_TEXT_PROVIDER` + `AI_TEXT_MODEL`). xAI/Grok is supported via `XAI_API_KEY`.
+
+## Documentation
+
+Interactive API docs are available at `http://localhost/docs` (Scribe) after running `php artisan scribe:generate`.
+
+Postman collection: `storage/app/private/scribe/collection.json`
+
+## Testing
+
+```bash
+php artisan test
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT
