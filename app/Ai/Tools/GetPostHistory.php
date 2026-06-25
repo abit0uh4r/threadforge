@@ -25,7 +25,7 @@ class GetPostHistory implements Tool
     {
         $postId = $request['postId'];
 
-        $post = Post::with('campaign:id,name', 'rawContent:id,content,source_type')->find($postId);
+        $post = Post::with(['campaign:id,name', 'rawContent:id,content,source_type', 'versions'])->find($postId);
 
         if (! $post) {
             return "Post with ID {$postId} not found.";
@@ -34,16 +34,31 @@ class GetPostHistory implements Tool
         $bodyPoints = collect($post->body_points)->map(fn ($p, $i) => '  '.($i + 1).". {$p}")->implode(PHP_EOL);
         $hashtags = collect($post->suggested_hashtags)->implode(', ');
 
+        $versions = $post->versions->map(function ($v) {
+            $vp = collect($v->body_points)->map(fn ($p, $i) => '      '.($i + 1).". {$p}")->implode(PHP_EOL);
+
+            return "  Version {$v->version} ({$v->created_at?->toIso8601String()}):
+      Hook: {$v->hook}
+      Body points:
+{$vp}
+      Change summary: {$v->change_summary}";
+        })->implode(PHP_EOL.PHP_EOL);
+
         return <<<TEXT
-        Post History (ID: {$post->id}, Version: {$post->version}):
+        Post History (ID: {$post->id}, Current Version: {$post->version}):
         Status: {$post->status}
         Campaign: {$post->campaign?->name}
+
+        CURRENT VERSION:
         Hook: {$post->hook}
         Body points:
         {$bodyPoints}
         Hashtags: {$hashtags}
         Readability score: {$post->readability_score}/100
         Tone justification: {$post->tone_justification}
+
+        ALL PREVIOUS VERSIONS:
+        {$versions}
 
         Original raw content:
         {$post->rawContent?->content}
