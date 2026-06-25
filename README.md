@@ -14,7 +14,7 @@ ThreadForge takes raw technical content (notes, blog markdown, GitHub README) an
 | Auth | Laravel Sanctum (Bearer Tokens) |
 | Database | MySQL 8.4 (Laragon) |
 | Queue | Database driver (async jobs) |
-| AI | laravel/ai SDK v0.8 + Groq (llama-3.3-70b-versatile) |
+| AI | laravel/ai SDK v0.8 + Groq (gpt-oss-20b for structured, llama-3.3-70b for agent chat) |
 | Docs | Scribe v5.11 (OpenAPI + Postman) |
 
 ## Architecture

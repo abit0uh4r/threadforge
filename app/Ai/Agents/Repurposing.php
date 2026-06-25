@@ -15,7 +15,7 @@ use Laravel\Ai\Promptable;
 use Stringable;
 
 #[Provider(Lab::Groq)]
-#[Model('llama-3.3-70b-versatile')]
+#[Model('openai/gpt-oss-20b')]
 #[MaxTokens(2048)]
 #[Temperature(0.7)]
 class Repurposing implements Agent, HasStructuredOutput
