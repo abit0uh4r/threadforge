@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
@@ -21,9 +22,9 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    public function authenticate(): \App\Models\User
+    public function authenticate(): User
     {
-        $user = \App\Models\User::where('email', $this->email)->first();
+        $user = User::where('email', $this->email)->first();
 
         if (! $user || ! \Hash::check($this->password, $user->password)) {
             throw ValidationException::withMessages([

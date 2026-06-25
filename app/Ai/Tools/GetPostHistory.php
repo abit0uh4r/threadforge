@@ -31,7 +31,7 @@ class GetPostHistory implements Tool
             return "Post with ID {$postId} not found.";
         }
 
-        $bodyPoints = collect($post->body_points)->map(fn ($p, $i) => "  ".($i + 1).". {$p}")->implode(PHP_EOL);
+        $bodyPoints = collect($post->body_points)->map(fn ($p, $i) => '  '.($i + 1).". {$p}")->implode(PHP_EOL);
         $hashtags = collect($post->suggested_hashtags)->implode(', ');
 
         return <<<TEXT

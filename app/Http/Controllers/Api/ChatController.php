@@ -8,7 +8,6 @@ use App\Http\Requests\Chat\StoreChatRequest;
 use App\Http\Resources\ChatResource;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 /**
  * @group Chat
@@ -25,9 +24,12 @@ class ChatController extends Controller
      * la mémoire de la conversation via son ID.
      *
      * @authenticated
+     *
      * @urlParam id integer required ID du post à discuter. Example: 1
+     *
      * @bodyParam message string required Le message/question pour l'assistant. Example: Donne-moi 3 variantes plus agressives pour le hook
      * @bodyParam conversation_id string ID de conversation existante pour continuer le contexte (optionnel). Example: conv_abc123
+     *
      * @response 200 {"data": {"response": "Here are 3 more aggressive variants...", "conversation_id": "conv_abc123"}}
      * @response 422 {"message": "The given data was invalid.", "errors": {"message": ["The message field is required."]}}
      */

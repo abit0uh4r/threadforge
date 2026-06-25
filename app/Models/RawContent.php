@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['campaign_id', 'content', 'source_type', 'status', 'error'])]
+#[Fillable(['user_id', 'campaign_id', 'content', 'source_type', 'status', 'error'])]
 class RawContent extends Model
 {
     use HasFactory;

@@ -23,9 +23,11 @@ class AuthController extends Controller
      * Crée un nouveau compte créateur et retourne un Bearer Token d'accès.
      *
      * @unauthenticated
+     *
      * @bodyParam name string required Nom du créateur. Example: Jane Doe
      * @bodyParam email string required Adresse email unique. Example: jane@example.com
      * @bodyParam password string required Mot de passe (min 8 caractères). Example: secret123
+     *
      * @response 201 {
      *   "data": {"id": 1, "name": "Jane Doe", "email": "jane@example.com", "created_at": "2026-06-25T12:00:00+00:00", "updated_at": "2026-06-25T12:00:00+00:00"},
      *   "token": "1|abcdef123456..."
@@ -49,9 +51,11 @@ class AuthController extends Controller
      * Authentifie un créateur et retourne un Bearer Token d'accès.
      *
      * @unauthenticated
+     *
      * @bodyParam email string required Adresse email. Example: jane@example.com
      * @bodyParam password string required Mot de passe. Example: secret123
      * @bodyParam device_name string Nom de l'appareil (optionnel). Example: iPhone 15
+     *
      * @response 200 {"data": {"id": 1, "name": "Jane Doe", "email": "jane@example.com", "created_at": "2026-06-25T12:00:00+00:00", "updated_at": "2026-06-25T12:00:00+00:00"}, "token": "1|abcdef123456..."}
      * @response 422 {"message": "The given data was invalid.", "errors": {"email": ["These credentials do not match our records."]}}
      */
@@ -72,6 +76,7 @@ class AuthController extends Controller
      * Révoque le token courant.
      *
      * @authenticated
+     *
      * @response 200 {"message": "Logged out"}
      */
     public function logout(Request $request): JsonResponse

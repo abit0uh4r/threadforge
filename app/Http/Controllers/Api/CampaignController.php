@@ -22,6 +22,7 @@ class CampaignController extends Controller
      * Retourne toutes les campagnes du créateur authentifié avec le nombre de posts générés.
      *
      * @authenticated
+     *
      * @response 200 {
      *   "data": [
      *     {"id": 1, "name": "Tech Twitter", "target_audience": "dev community", "tone": "pro but casual", "max_length": 280, "max_hashtags": 1, "rules": ["No buzzwords", "Always cite sources"], "posts_count": 5, "created_at": "2026-06-25T12:00:00+00:00", "updated_at": "2026-06-25T12:00:00+00:00"}
@@ -46,12 +47,14 @@ class CampaignController extends Controller
      * Définit les règles de style strictes pour les futures générations de posts.
      *
      * @authenticated
+     *
      * @bodyParam name string required Nom de la campagne. Example: Tech Twitter
      * @bodyParam target_audience string Audience cible. Example: dev community
      * @bodyParam tone string Ton éditorial. Example: pro but casual
      * @bodyParam max_length integer Longueur max du post (défaut: 280). Example: 280
      * @bodyParam max_hashtags integer Nombre max de hashtags (défaut: 1). Example: 1
      * @bodyParam rules string[] Règles additionnelles. Example: ["No buzzwords", "Always cite sources"]
+     *
      * @response 201 {"data": {"id": 1, "name": "Tech Twitter", "target_audience": "dev community", "tone": "pro but casual", "max_length": 280, "max_hashtags": 1, "rules": ["No buzzwords", "Always cite sources"], "posts_count": 0, "created_at": "2026-06-25T12:00:00+00:00", "updated_at": "2026-06-25T12:00:00+00:00"}}
      * @response 422 {"message": "The given data was invalid.", "errors": {"name": ["The name field is required."]}}
      */
@@ -71,7 +74,9 @@ class CampaignController extends Controller
      * Retourne une campagne spécifique avec le nombre de posts générés.
      *
      * @authenticated
+     *
      * @urlParam id integer required ID de la campagne. Example: 1
+     *
      * @response 200 {"data": {"id": 1, "name": "Tech Twitter", "target_audience": "dev community", "tone": "pro but casual", "max_length": 280, "max_hashtags": 1, "rules": ["No buzzwords", "Always cite sources"], "posts_count": 5, "created_at": "2026-06-25T12:00:00+00:00", "updated_at": "2026-06-25T12:00:00+00:00"}}
      * @response 404 {"message": "No query results for model [App\\Models\\Campaign]."}
      */

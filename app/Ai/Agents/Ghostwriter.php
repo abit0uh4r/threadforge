@@ -5,7 +5,6 @@ namespace App\Ai\Agents;
 use App\Ai\Tools\GetCampaignRules;
 use App\Ai\Tools\GetPostHistory;
 use App\Models\Post;
-use App\Models\User;
 use Laravel\Ai\Attributes\MaxSteps;
 use Laravel\Ai\Attributes\MaxTokens;
 use Laravel\Ai\Attributes\Temperature;

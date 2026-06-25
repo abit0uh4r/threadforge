@@ -9,14 +9,15 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class RepurposeContentJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, SerializesModels;
 
     public int $tries = 2;
+
     public int $timeout = 120;
 
     public function __construct(
