@@ -5,12 +5,17 @@ namespace App\Ai\Agents;
 use App\Models\Campaign;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Attributes\MaxTokens;
+use Laravel\Ai\Attributes\Model;
+use Laravel\Ai\Attributes\Provider;
 use Laravel\Ai\Attributes\Temperature;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasStructuredOutput;
+use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Promptable;
 use Stringable;
 
+#[Provider(Lab::Groq)]
+#[Model('llama-3.3-70b-versatile')]
 #[MaxTokens(2048)]
 #[Temperature(0.7)]
 class Repurposing implements Agent, HasStructuredOutput
