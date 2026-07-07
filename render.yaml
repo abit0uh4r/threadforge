@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: threadforge-api
+    runtime: docker
+    repo: https://github.com/abit0uh4r/threadforge
+    branch: master
+    plan: free
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_URL
+        fromDatabase:
+          name: threadforge-db
+          property: connectionString
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: SESSION_DRIVER
+        value: database
+      - key: GROQ_API_KEY
+        sync: false
+      - key: AI_TEXT_PROVIDER
+        value: groq
+      - key: AI_TEXT_MODEL
+        value: openai/gpt-oss-20b
+      - key: APP_URL
+        value: https://threadforge-api.onrender.com
+
+databases:
+  - name: threadforge-db
+    plan: free
+    ipAllowList: []

@@ -11,6 +11,13 @@ class CampaignTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_index_rejects_unauthenticated_request_with_401(): void
+    {
+        $response = $this->getJson('/api/campaigns');
+
+        $response->assertStatus(401);
+    }
+
     public function test_index_returns_only_authenticated_user_campaigns(): void
     {
         $user = User::factory()->create();
