@@ -59,7 +59,7 @@ class AuthTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $response->assertStatus(418)
+        $response->assertStatus(200)
             ->assertJsonStructure(['data' => ['id', 'name', 'email'], 'token']);
     }
 
